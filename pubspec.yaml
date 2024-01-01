@@ -1,0 +1,27 @@
+name: game_for_cats_flutter
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+
+dependencies:
+  flame: '1.8.1'
+  flame_audio: '2.0.4'
+  flutter:
+    sdk: flutter
+  intl: ^0.18.1
+  path_provider: ^2.1.1
+  sqflite: ^2.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets: 
+    - assets/images/
+    - assets/audio/
