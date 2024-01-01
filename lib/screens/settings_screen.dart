@@ -1,6 +1,4 @@
 // ignore_for_file: must_be_immutable
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/database/db_helper.dart';
 import 'package:game_for_cats_flutter/enums/game_enums.dart';

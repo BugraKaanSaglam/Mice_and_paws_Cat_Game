@@ -1,22 +1,21 @@
 import 'dart:math';
 
 import 'package:flame/components.dart';
+import 'package:game_for_cats_flutter/global/global_variables.dart';
 
 /// Generalized utility methods for Vector based problems.
 ///
 ///
 class Utils {
   /// Generate a random location for any Component
-  ///
-  ///
   static Vector2 generateRandomPosition(Vector2 screenSize, Vector2 margins) {
     var result = Vector2.zero();
     var randomGenerator = Random();
     //
     // Generate a new random position
     result = Vector2(randomGenerator.nextInt(screenSize.x.toInt() - 2 * margins.x.toInt()).toDouble() + margins.x,
-        randomGenerator.nextInt(screenSize.y.toInt() - 2 * margins.y.toInt()).toDouble() + margins.y);
-
+        randomGenerator.nextInt(screenSize.y.toInt() - gameScreenTopBarHeight.toInt() - 2 * margins.y.toInt()).toDouble() + margins.y);
+    result.add(Vector2(0, gameScreenTopBarHeight));
     return result;
   }
 
@@ -46,7 +45,7 @@ class Utils {
   static bool isPositionOutOfBounds(Vector2 bounds, Vector2 position) {
     bool result = false;
 
-    if (position.x > bounds.x || position.x < 0 || position.y < 0 || position.y > bounds.y) {
+    if (position.x > bounds.x || position.x < gameScreenTopBarHeight || position.y < 0 || position.y > bounds.y) {
       result = true;
     }
 
@@ -67,8 +66,8 @@ class Utils {
     Vector2 result = position;
 
     if (position.x >= bounds.x) {
-      result.x = 0;
-    } else if (position.x <= 0) {
+      result.x = gameScreenTopBarHeight;
+    } else if (position.x <= gameScreenTopBarHeight) {
       result.x = bounds.x;
     }
 
