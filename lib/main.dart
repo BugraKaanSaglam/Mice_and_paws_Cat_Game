@@ -51,7 +51,7 @@ class _MainAppState extends State<MainApp> {
       background: Colors.yellow, //True Background Color
       onBackground: Colors.black, //X
       surface: Colors.purpleAccent, //App Color
-      onSurface: Colors.white, //AppBar Text Color
+      onSurface: Colors.black, //AppBar Text Color
     ),
   );
 }

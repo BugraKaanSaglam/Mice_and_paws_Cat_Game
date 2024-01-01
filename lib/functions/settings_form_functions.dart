@@ -22,6 +22,4 @@ BoxDecoration switchDecoration() {
   );
 }
 
-TextStyle formTextStyle() {
-  return const TextStyle(color: Colors.black, fontSize: 18);
-}
+TextStyle formTextStyle() => const TextStyle(color: Colors.black, fontSize: 18);

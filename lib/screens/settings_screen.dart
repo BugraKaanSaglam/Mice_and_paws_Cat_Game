@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/database/db_helper.dart';
+import 'package:game_for_cats_flutter/enums/game_enums.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import '../database/db_error.dart';
 import '../database/opc_database_list.dart';
@@ -19,9 +20,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   OPCDataBase? _db;
-  int? languageCode;
-  double? musicVolume;
-  double? miceVolume;
 
   @override
   void initState() {
@@ -46,16 +44,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 return dbError(context);
               }
               _db = snapshot.data;
-              languageCode = _db?.languageCode ?? 0;
-              musicVolume = _db?.musicVolume ?? 10;
-              miceVolume = _db?.miceVolume ?? 10;
-              log(_db.toString());
-
               return Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [languageDropDownFormField(), musicField(), miceSoundField(), saveButton()],
+                  children: [languageDropDownFormField(), difficultyDropDownFormField(), musicField(), miceSoundField(), saveButton()],
                 ),
               );
             default:
@@ -67,8 +60,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 //*FormFields
   Column languageDropDownFormField() {
     List<DropdownMenuItem> items = [
-      const DropdownMenuItem(value: 0, child: Text('Türkçe')),
-      const DropdownMenuItem(value: 1, child: Text('English')),
+      DropdownMenuItem(value: Language.turkish.value, child: Text(Language.turkish.name)),
+      DropdownMenuItem(value: Language.english.value, child: Text(Language.english.name)),
     ];
     return Column(
       children: [
@@ -78,7 +71,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
           value: _db?.languageCode ?? 0,
           decoration: formDecoration(),
           items: items,
-          onChanged: (value) => languageCode = value,
+          onChanged: (value) => _db?.languageCode = value,
+        ),
+      ],
+    );
+  }
+
+  Column difficultyDropDownFormField() {
+    List<DropdownMenuItem> items = [
+      DropdownMenuItem(value: Difficulty.easy.value, child: Text(Difficulty.easy.name)),
+      DropdownMenuItem(value: Difficulty.medium.value, child: Text(Difficulty.medium.name)),
+      DropdownMenuItem(value: Difficulty.hard.value, child: Text(Difficulty.hard.name)),
+    ];
+    return Column(
+      children: [
+        const Text('Select Difficulty'),
+        DropdownButtonFormField(
+          dropdownColor: Colors.white,
+          value: _db?.difficulty ?? 0,
+          decoration: formDecoration(),
+          items: items,
+          onChanged: (value) => _db?.difficulty = value,
         ),
       ],
     );
@@ -93,12 +106,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Slider(
               min: 0,
               max: 1,
-              value: musicVolume!.toDouble(),
+              value: _db!.musicVolume.toDouble(),
               onChanged: (newValue) {
-                musicState(() {
-                  _db!.musicVolume = newValue;
-                  musicVolume = newValue;
-                });
+                musicState(() => _db!.musicVolume = newValue);
               },
             ),
           ],
@@ -116,12 +126,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Slider(
               min: 0,
               max: 1,
-              value: miceVolume!.toDouble(),
+              value: _db!.miceVolume.toDouble(),
               onChanged: (newValue) {
-                miceSoundState(() {
-                  _db!.miceVolume = newValue;
-                  miceVolume = newValue;
-                });
+                miceSoundState(() => _db!.miceVolume = newValue);
               },
             ),
           ],
@@ -132,14 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   ElevatedButton saveButton() {
     return ElevatedButton(
-      onPressed: () {
-        _db?.languageCode = languageCode ?? 0;
-        _db?.musicVolume = musicVolume ?? 1;
-        _db?.miceVolume = miceVolume ?? 1;
-
-        DBHelper().update(_db!);
-        log(_db.toString());
-      },
+      onPressed: () => DBHelper().update(_db!),
       child: const Text('Save'),
     );
   }

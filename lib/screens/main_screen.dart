@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/database/db_error.dart';
 import 'package:game_for_cats_flutter/database/db_helper.dart';
 import 'package:game_for_cats_flutter/database/opc_database_list.dart';
+import 'package:game_for_cats_flutter/enums/game_enums.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 
 import '../global/global_functions.dart';
@@ -37,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
               return const Center(child: CircularProgressIndicator());
             case ConnectionState.done:
               if (snapshot.data == null) {
-                OPCDataBase initDataBase = OPCDataBase(ver: databaseVersion, languageCode: 0, musicVolume: 0.5, miceVolume: 1);
+                OPCDataBase initDataBase = OPCDataBase(ver: databaseVersion, languageCode: Language.turkish.value, musicVolume: 0.5, miceVolume: 1, difficulty: Difficulty.easy.value );
                 DBHelper().add(initDataBase);
                 _db = initDataBase;
               } else {
@@ -65,7 +66,6 @@ class _MainScreenState extends State<MainScreen> {
 //* Buttons
   ElevatedButton mainMenuButtons(BuildContext context, String buttonString, String adressString, Icon buttonIcon, {OPCDataBase? dataBase}) {
     ArgumentSender? argumentSender;
-
     argumentSender = ArgumentSender(title: buttonString, dataBase: dataBase);
 
     return ElevatedButton(
