@@ -1,3 +1,17 @@
 {
-    "game_name": "GAME NAME"  
+    "game_name": "GAME NAME",
+    "start_button": "Start!",
+    "settings_button": "Settings",
+    "howtoplay_button": "How To Play?",
+    "credits_button": "Credits",
+    "exit_button": "Exit",
+    "select_language": "Select Language",
+    "select_difficulty": "Select Difficulty",
+    "select_musicvolume": "Game Music Volume",
+    "select_micevolume": "Mice Volume",
+    "save_button": "Save",
+    "countdown": "Time Left",
+    "game_over": "Game Over",
+    "tryagain_button": "Try Again",
+    "return_mainmenu_button": "Return to MainMenu"
 }

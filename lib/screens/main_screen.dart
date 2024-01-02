@@ -1,10 +1,10 @@
 // ignore_for_file: must_be_immutable
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/database/db_error.dart';
 import 'package:game_for_cats_flutter/database/db_helper.dart';
 import 'package:game_for_cats_flutter/database/opc_database_list.dart';
+import 'package:game_for_cats_flutter/enums/enum_functions.dart';
 import 'package:game_for_cats_flutter/enums/game_enums.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,7 +25,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     //Check Language
-    MainApp.of(context)!.setLocale(languageCode.value);
+    Future.delayed(const Duration(), () {
+      MainApp.of(context)!.setLocale(languageCode.value);
+    });
     super.initState();
   }
 
@@ -50,25 +52,29 @@ class _MainScreenState extends State<MainScreen> {
               } else {
                 _db = snapshot.data;
               }
-
-              log("Language Code => $languageCode, dbLangCode => ${_db!.languageCode}");
               if (snapshot.hasError && _db == null) {
                 return dbError(context);
               }
+              //Check Game Difficulty
+              checkGameDifficulty(_db?.difficulty);
               return Column(children: [
                 const Spacer(flex: 20),
-                mainMenuButtons(context, 'Start!', '/game_screen', const Icon(Icons.arrow_right_alt_sharp), dataBase: _db),
-                mainMenuButtons(context, 'Settings', '/settings_screen', const Icon(Icons.settings)),
-                mainMenuButtons(context, 'How To Play?', '/howtoplay_screen', const Icon(Icons.menu_book)),
-                mainMenuButtons(context, 'Credits', '/credits_screen', const Icon(Icons.pest_control_rodent_sharp)),
+                mainMenuButtons(context, AppLocalizations.of(context)!.start_button, '/game_screen', const Icon(Icons.arrow_right_alt_sharp), dataBase: _db),
+                mainMenuButtons(context, AppLocalizations.of(context)!.settings_button, '/settings_screen', const Icon(Icons.settings)),
+                mainMenuButtons(context, AppLocalizations.of(context)!.howtoplay_button, '/howtoplay_screen', const Icon(Icons.menu_book)),
+                mainMenuButtons(context, AppLocalizations.of(context)!.credits_button, '/credits_screen', const Icon(Icons.pest_control_rodent_sharp)),
                 const Spacer(flex: 1),
-                exitButton(context),
+                exitButton(AppLocalizations.of(context)!.exit_button, context),
               ]);
 
             default:
               return dbError(context);
           }
         });
+  }
+
+  checkGameDifficulty(int? difficulty) {
+    getDifficultyFromValue(difficulty); //This also set gameDifficultyTimer!
   }
 
 //* Buttons
@@ -82,7 +88,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  ElevatedButton exitButton(BuildContext context) {
-    return ElevatedButton(onPressed: () => exit(0), child: const Row(children: [Text('Exit'), Icon(Icons.exit_to_app_outlined)]));
+  ElevatedButton exitButton(String title, BuildContext context) {
+    return ElevatedButton(onPressed: () => exit(0), child: Row(children: [Text(title), const Icon(Icons.exit_to_app_outlined)]));
   }
 }

@@ -11,7 +11,8 @@ enum Language {
 enum Difficulty {
   easy(0, 'Easy'),
   medium(1, 'Medium'),
-  hard(2, 'Hard');
+  hard(2, 'Hard'),
+  sandbox(3, 'Sandbox');
 
   const Difficulty(this.value, this.name);
   final int value;

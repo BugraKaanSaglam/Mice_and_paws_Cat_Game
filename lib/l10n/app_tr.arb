@@ -1,3 +1,17 @@
 {
-    "game_name": "OYUN ISMI"
+    "game_name": "OYUN ISMI",
+    "start_button": "Başla!",
+    "settings_button": "Ayarlar",
+    "howtoplay_button": "Nasıl Oynanır?",
+    "credits_button": "Emeği Geçenler",
+    "exit_button": "Çıkış Yap",
+    "select_language": "Dil Seçiniz",
+    "select_difficulty": "Zorluk Seçiniz",
+    "select_musicvolume": "Müziğin Ses Yüksekliği",
+    "select_micevolume": "Farelerin Ses Yüksekliği",
+    "save_button": "Kaydet",
+    "countdown": "Kalan Süre",
+    "game_over": "Oyun Bitti",
+    "tryagain_button": "Tekrar Dene",
+    "return_mainmenu_button": "Ana Menü'ye Dön"
 }

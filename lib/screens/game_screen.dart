@@ -15,6 +15,7 @@ import 'package:game_for_cats_flutter/global/global_variables.dart';
 import 'package:game_for_cats_flutter/objects/mouse.dart';
 import '../global/global_images.dart';
 import '../utils/utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -63,13 +64,31 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
           Mice mice = Mice(startPosition, startRndVelocity, startingSpeed);
           add(mice);
         }
-        if (elapsedTicks == 100) {
+        if (elapsedTicks == gameDifficultyTimer) {
           //End Game
           pauseEngine();
           showDialog(
             context: buildContext!,
             builder: (context) {
-              return const Column();
+              return AlertDialog(
+                title: Text(AppLocalizations.of(buildContext!)!.game_over),
+                content: Column(
+                  children: [
+                    const Spacer(flex: 10),
+                    ElevatedButton(
+                      onPressed: () => {
+                        gameRef.pauseEngine(),
+                        Navigator.pushNamedAndRemoveUntil(context, '/game_screen', (route) => false, arguments: ArgumentSender(title: "", dataBase: gameDataBase))
+                      },
+                      child: Text(AppLocalizations.of(buildContext!)!.tryagain_button),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false),
+                      child: Text(AppLocalizations.of(buildContext!)!.return_mainmenu_button),
+                    ),
+                  ],
+                ),
+              );
             },
           );
         }
@@ -116,7 +135,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     );
 
     final textPainter = TextPainter(
-      text: TextSpan(text: 'Countdown: $elapsedTicks', style: textStyle),
+      text: TextSpan(text: '${AppLocalizations.of(buildContext!)!.countdown}: ${gameDifficultyTimer - elapsedTicks}', style: textStyle),
       textDirection: TextDirection.ltr,
     );
 

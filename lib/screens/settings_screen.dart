@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/database/db_helper.dart';
 import 'package:game_for_cats_flutter/enums/game_enums.dart';
-import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import 'package:game_for_cats_flutter/main.dart';
 import '../database/db_error.dart';
 import '../database/opc_database_list.dart';
 import '../functions/settings_form_functions.dart';
 import '../global/global_functions.dart';
 import '../global/global_variables.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -27,8 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as ArgumentSender;
-    return Scaffold(appBar: mainAppBar(args.title!, context, true), body: mainBody(context));
+    return Scaffold(appBar: mainAppBar(AppLocalizations.of(context)!.settings_button, context, true), body: mainBody(context));
   }
 
   Widget mainBody(BuildContext context) {
@@ -64,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ];
     return Column(
       children: [
-        const Text('Select Language'),
+        Text(AppLocalizations.of(context)!.select_language),
         DropdownButtonFormField(
           dropdownColor: Colors.white,
           value: _db?.languageCode ?? 0,
@@ -84,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ];
     return Column(
       children: [
-        const Text('Select Difficulty'),
+        Text(AppLocalizations.of(context)!.select_difficulty),
         DropdownButtonFormField(
           dropdownColor: Colors.white,
           value: _db?.difficulty ?? 0,
@@ -101,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (context, musicState) {
         return Column(
           children: [
-            const Text('Select Music Volume'),
+            Text(AppLocalizations.of(context)!.select_musicvolume),
             Slider(
               min: 0,
               max: 1,
@@ -121,7 +120,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (context, miceSoundState) {
         return Column(
           children: [
-            const Text('Select Mice Volume'),
+            Text(AppLocalizations.of(context)!.select_micevolume),
             Slider(
               min: 0,
               max: 1,
@@ -144,7 +143,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           MainApp.of(context)!.setLocale(_db!.languageCode);
         });
       },
-      child: const Text('Save'),
+      child: Text(AppLocalizations.of(context)!.save_button),
     );
   }
 }
