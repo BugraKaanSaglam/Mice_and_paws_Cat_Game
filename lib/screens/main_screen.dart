@@ -1,4 +1,5 @@
 // ignore_for_file: must_be_immutable
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/database/db_error.dart';
@@ -6,9 +7,11 @@ import 'package:game_for_cats_flutter/database/db_helper.dart';
 import 'package:game_for_cats_flutter/database/opc_database_list.dart';
 import 'package:game_for_cats_flutter/enums/game_enums.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../global/global_functions.dart';
 import '../global/global_variables.dart';
+import '../main.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -21,12 +24,14 @@ class _MainScreenState extends State<MainScreen> {
   OPCDataBase? _db;
   @override
   void initState() {
+    //Check Language
+    MainApp.of(context)!.setLocale(languageCode.value);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: mainAppBar('Game Name', context, false), body: mainBody(context));
+    return Scaffold(appBar: mainAppBar(AppLocalizations.of(context)!.game_name, context, false), body: mainBody(context));
   }
 
   Widget mainBody(BuildContext context) {
@@ -38,12 +43,15 @@ class _MainScreenState extends State<MainScreen> {
               return const Center(child: CircularProgressIndicator());
             case ConnectionState.done:
               if (snapshot.data == null) {
-                OPCDataBase initDataBase = OPCDataBase(ver: databaseVersion, languageCode: Language.turkish.value, musicVolume: 0.5, miceVolume: 1, difficulty: Difficulty.easy.value );
+                OPCDataBase initDataBase =
+                    OPCDataBase(ver: databaseVersion, languageCode: Language.turkish.value, musicVolume: 0.5, miceVolume: 1, difficulty: Difficulty.easy.value);
                 DBHelper().add(initDataBase);
                 _db = initDataBase;
               } else {
                 _db = snapshot.data;
               }
+
+              log("Language Code => $languageCode, dbLangCode => ${_db!.languageCode}");
               if (snapshot.hasError && _db == null) {
                 return dbError(context);
               }

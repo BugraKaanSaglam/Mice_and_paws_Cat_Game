@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/database/db_helper.dart';
 import 'package:game_for_cats_flutter/enums/game_enums.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
+import 'package:game_for_cats_flutter/main.dart';
 import '../database/db_error.dart';
 import '../database/opc_database_list.dart';
 import '../functions/settings_form_functions.dart';
@@ -137,7 +138,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   ElevatedButton saveButton() {
     return ElevatedButton(
-      onPressed: () => DBHelper().update(_db!),
+      onPressed: () {
+        setState(() {
+          DBHelper().update(_db!);
+          MainApp.of(context)!.setLocale(_db!.languageCode);
+        });
+      },
       child: const Text('Save'),
     );
   }

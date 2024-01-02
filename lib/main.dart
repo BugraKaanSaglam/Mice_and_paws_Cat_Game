@@ -1,10 +1,13 @@
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
+import 'package:game_for_cats_flutter/enums/enum_functions.dart';
+import 'package:game_for_cats_flutter/enums/game_enums.dart';
 import 'package:game_for_cats_flutter/screens/credits_screen.dart';
 import 'package:game_for_cats_flutter/screens/game_screen.dart';
 import 'package:game_for_cats_flutter/screens/howtoplay_screen.dart';
 import 'package:game_for_cats_flutter/screens/main_screen.dart';
 import 'package:game_for_cats_flutter/screens/settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,16 +19,29 @@ class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
   @override
-  State<MainApp> createState() => _MainAppState();
+  State<MainApp> createState() => MainAppState();
+  static MainAppState? of(BuildContext context) => context.findAncestorStateOfType<MainAppState>();
 }
 
-class _MainAppState extends State<MainApp> {
+//Language Controller
+Language languageCode = Language.turkish;
+
+class MainAppState extends State<MainApp> {
+  void setLocale(int value) {
+    setState(() {
+      languageCode = getLanguageFromValue(value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: gameTheme,
       debugShowCheckedModeBanner: false,
       home: const MainScreen(),
+      locale: Locale.fromSubtags(languageCode: languageCode.shortName),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       routes: {
         '/main_screen': (context) => const MainScreen(),
         '/settings_screen': (context) => const SettingsScreen(),

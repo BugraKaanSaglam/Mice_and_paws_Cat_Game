@@ -9,8 +9,11 @@ environment:
 dependencies:
   flame: '1.8.1'
   flame_audio: '2.0.4'
-  flutter:
+  flutter_localizations:
     sdk: flutter
+  flutter:
+    sdk: flutter 
+ 
   intl: ^0.18.1
   path_provider: ^2.1.1
   sqflite: ^2.3.0
@@ -20,7 +23,9 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
 
-flutter:
+
+flutter:   
+  generate: true
   uses-material-design: true
   assets: 
     - assets/images/

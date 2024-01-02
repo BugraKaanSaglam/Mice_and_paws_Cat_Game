@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flame/cache.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -12,7 +13,6 @@ import 'package:game_for_cats_flutter/database/opc_database_list.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import 'package:game_for_cats_flutter/global/global_variables.dart';
 import 'package:game_for_cats_flutter/objects/mouse.dart';
-import '../global/global_functions.dart';
 import '../global/global_images.dart';
 import '../utils/utils.dart';
 
@@ -45,25 +45,26 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
   Future<void> onLoad() async {
     //Loading Audio
     await FlameAudio.audioCache.load('mice_tap.mp3');
-
+    //Loading Images
     await Images().load('mice.png').then((value) => globalMiceImage = value);
     await Images().load('yellow_background.jpg').then((value) => globalYellowBackgroundImage = value);
+    //Add Button
 
-    //* Ekran Çarpışması
     add(ScreenHitbox());
-    //* Zamanlayıcı
+
     interval = Timer(
       1.0,
       onTick: () {
         if (elapsedTicks % 5 == 0) {
+          //Adding Mice Every 5 Seconds
           Vector2 startPosition = Vector2(0, gameScreenTopBarHeight + Random().nextDouble() * (size.y - gameScreenTopBarHeight));
           Vector2 startRndVelocity = Utils.generateRandomVelocity(size, 10, 100);
           double startingSpeed = 50;
-
           Mice mice = Mice(startPosition, startRndVelocity, startingSpeed);
           add(mice);
         }
         if (elapsedTicks == 100) {
+          //End Game
           pauseEngine();
           showDialog(
             context: buildContext!,
@@ -102,10 +103,43 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
   @override
   void render(Canvas canvas) {
     canvas.drawImageRect(globalYellowBackgroundImage, const Rect.fromLTWH(0, 0, 6016, 4016), Rect.fromLTWH(0, 0, size.x, size.y), Paint());
-
-    final TextPaint textPaint = TextPaint(style: const TextStyle(fontSize: 14, fontFamily: 'Awesome Font'));
-    textPaint.render(canvas, 'Objects Active: ${children.length - 1}', Vector2(10, 30));
-
+    canvas.drawRect(Vector2(gameRef.size.x, gameScreenTopBarHeight).toRect(), Paint()..color = Colors.purpleAccent); //TopBar
+    drawCountdown(canvas);
     super.render(canvas);
+  }
+
+  void drawCountdown(Canvas canvas) {
+    const textStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 20.0,
+      fontWeight: FontWeight.bold,
+    );
+
+    final textPainter = TextPainter(
+      text: TextSpan(text: 'Countdown: $elapsedTicks', style: textStyle),
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout();
+
+    // Position the countdown text in the center of the top bar
+    final textPosition = Offset((size.x - textPainter.width) / 2, gameScreenTopBarHeight / 2);
+
+    // Draw the countdown text on the canvas
+    textPainter.paint(canvas, textPosition);
+  }
+}
+
+class MyButton extends PositionComponent with TapCallbacks {
+  bool isTapping = false;
+
+  @override
+  void onTapDown(TapDownEvent event) {
+    isTapping = true;
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    isTapping = true;
   }
 }

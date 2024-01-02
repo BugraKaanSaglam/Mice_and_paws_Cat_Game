@@ -1,10 +1,11 @@
 enum Language {
-  turkish(0, "Türkçe"),
-  english(1, "English");
+  turkish(0, "Türkçe", "tr"),
+  english(1, "English", "en");
 
-  const Language(this.value, this.name);
+  const Language(this.value, this.name, this.shortName);
   final int value;
   final String name;
+  final String shortName;
 }
 
 enum Difficulty {

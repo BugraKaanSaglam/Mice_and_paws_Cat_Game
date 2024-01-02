@@ -9,7 +9,7 @@ AppBar mainAppBar(String title, BuildContext context, bool hasBackButton) {
   }
   return AppBar(title: Text(title), centerTitle: true, leading: leading);
 }
-
+/*
 AppBar gameAppBar({required String title, required BuildContext context, required bool hasBackButton, required int timerTicks, required int maxTime}) {
   Widget? leading = const SizedBox();
 
@@ -26,6 +26,7 @@ AppBar gameAppBar({required String title, required BuildContext context, require
     leading: leading,
   );
 }
+*/
 
 class TopBar extends PositionComponent with HasGameRef {
   TopBar();
@@ -57,10 +58,7 @@ class TopBar extends PositionComponent with HasGameRef {
     );
 
     final textPainter = TextPainter(
-      text: TextSpan(
-        text: 'Countdown: $countdown',
-        style: textStyle,
-      ),
+      text: TextSpan(text: 'Countdown: $countdown', style: textStyle),
       textDirection: TextDirection.ltr,
     );
 
