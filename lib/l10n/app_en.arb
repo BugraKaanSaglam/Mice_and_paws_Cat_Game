@@ -13,11 +13,5 @@
     "countdown": "Time Left",
     "game_over": "Game Over",
     "tryagain_button": "Try Again",
-    "return_mainmenu_button": "Return to MainMenu",
-    "howtoplay_label_forhuman": "How To Play? (For Humans)",
-    "howtoplay_text_forhuman": "Game is soo simple! Select play time of cats from settings, then press Start! Each object cat caught during game, gains points! If you want no time limit, then select sandbox from settings!",
-    "howtoplay_label_forcats": "How To Play? (For Cats)",
-    "howtoplay_text_forcats": "Meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow",
-    "micetap_count": "Mice Tapped:",
-    "wrongtap_count": "Tapped Outside:"
+    "return_mainmenu_button": "Return to MainMenu"
 }
