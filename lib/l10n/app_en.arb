@@ -13,5 +13,11 @@
     "countdown": "Time Left",
     "game_over": "Game Over",
     "tryagain_button": "Try Again",
-    "return_mainmenu_button": "Return to MainMenu"
+    "return_mainmenu_button": "Return to MainMenu",  
+    "howtoplay_label_forhuman": "How To Play? (For Humans)",
+    "howtoplay_text_forhuman": "Game is soo simple!, Select time for play from settings, then press Start!, If you want no time limit, select sandbox from settings!",
+    "howtoplay_label_forcats": "How To Play? (For Cats)",
+    "howtoplay_text_forcats": "Meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow",
+    "micetap_count": "Tapped Mice:",
+    "wrongtap_count": "Tapped Outside:"
 }
