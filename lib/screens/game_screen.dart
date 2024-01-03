@@ -28,17 +28,22 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ArgumentSender;
-    return GameWidget(game: Game(args.dataBase));
+    return GameWidget(game: Game(args.dataBase, context));
   }
 }
 
 class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, HasCollisionDetection {
-  Game(this.gameDataBase);
+  Game(this.gameDataBase, this.context);
+  BuildContext context;
   OPCDataBase? gameDataBase;
   bool isGameRunning = true; // Is Game Running ?
+  late ButtonComponent backButton;
 
   late Timer interval; // Time Variable
   int elapsedTicks = 0; // Seconds
+  //* Clicks
+  int wrongTaps = 0;
+  int miceTaps = 0;
   @override
   bool get debugMode => true;
 
@@ -50,7 +55,15 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     await Images().load('mice.png').then((value) => globalMiceImage = value);
     await Images().load('yellow_background.jpg').then((value) => globalYellowBackgroundImage = value);
     //Add Button
+    backButton = ButtonComponent(
+      position: Vector2(10, 10),
+      size: Vector2(40, 40),
+      children: [TextComponent(text: "BACK")],
+      onPressed: () => Navigator.pushNamedAndRemoveUntil(context, "main_screen", (route) => false),
+    );
+    //add(backButton); => é!!!!!é
 
+    //Add Collision
     add(ScreenHitbox());
 
     interval = Timer(
@@ -68,27 +81,35 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
           //End Game
           pauseEngine();
           showDialog(
-            context: buildContext!,
+            context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text(AppLocalizations.of(buildContext!)!.game_over),
-                content: Column(
-                  children: [
-                    const Spacer(flex: 10),
+                  title: Text(AppLocalizations.of(context)!.game_over),
+                  content: Container(
+                    height: 100,
+                    decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                      children: [
+                        Text("${AppLocalizations.of(context)!.micetap_count} $miceTaps"),
+                        const Spacer(flex: 1),
+                        Text("${AppLocalizations.of(context)!.wrongtap_count} $wrongTaps"),
+                        const Spacer(flex: 3),
+                      ],
+                    ),
+                  ),
+                  actions: [
                     ElevatedButton(
                       onPressed: () => {
                         gameRef.pauseEngine(),
                         Navigator.pushNamedAndRemoveUntil(context, '/game_screen', (route) => false, arguments: ArgumentSender(title: "", dataBase: gameDataBase))
                       },
-                      child: Text(AppLocalizations.of(buildContext!)!.tryagain_button),
+                      child: Text(AppLocalizations.of(context)!.tryagain_button),
                     ),
                     ElevatedButton(
                       onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false),
-                      child: Text(AppLocalizations.of(buildContext!)!.return_mainmenu_button),
+                      child: Text(AppLocalizations.of(context)!.return_mainmenu_button),
                     ),
-                  ],
-                ),
-              );
+                  ]);
             },
           );
         }
@@ -112,11 +133,13 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     children.any((component) {
       if (component is Mice && component.containsPoint(touchPoint)) {
         FlameAudio.play('mice_tap.mp3', volume: gameDataBase?.miceVolume ?? 1);
+        miceTaps++;
         remove(component);
         return true;
       }
       return false;
     });
+    wrongTaps++;
   }
 
   @override
@@ -127,6 +150,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     super.render(canvas);
   }
 
+  //* CountDown Text
   void drawCountdown(Canvas canvas) {
     const textStyle = TextStyle(
       color: Colors.white,
@@ -135,7 +159,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     );
 
     final textPainter = TextPainter(
-      text: TextSpan(text: '${AppLocalizations.of(buildContext!)!.countdown}: ${gameDifficultyTimer - elapsedTicks}', style: textStyle),
+      text: TextSpan(text: '${AppLocalizations.of(context)!.countdown}: ${gameDifficultyTimer - elapsedTicks}', style: textStyle),
       textDirection: TextDirection.ltr,
     );
 
@@ -149,16 +173,4 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
   }
 }
 
-class MyButton extends PositionComponent with TapCallbacks {
-  bool isTapping = false;
-
-  @override
-  void onTapDown(TapDownEvent event) {
-    isTapping = true;
-  }
-
-  @override
-  void onTapUp(TapUpEvent event) {
-    isTapping = true;
-  }
-}
+class MyButton extends PositionComponent with TapCallbacks {}
