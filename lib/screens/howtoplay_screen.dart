@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import '../global/global_functions.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HowToPlayScreen extends StatelessWidget {
   const HowToPlayScreen({super.key});
@@ -14,6 +15,22 @@ class HowToPlayScreen extends StatelessWidget {
   }
 
   Widget mainBody(BuildContext context) {
-    return const Column(children: []);
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Column(children: [
+        Text(AppLocalizations.of(context)!.howtoplay_label_forhuman, style: labelTextStyle()),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(AppLocalizations.of(context)!.howtoplay_text_forhuman, style: normalTextStyle()),
+        ),
+        const Spacer(flex: 1),
+        Text(AppLocalizations.of(context)!.howtoplay_label_forcats, style: labelTextStyle()),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(AppLocalizations.of(context)!.howtoplay_text_forcats, style: normalTextStyle()),
+        ),
+        const Spacer(flex: 1),
+      ]),
+    );
   }
 }
