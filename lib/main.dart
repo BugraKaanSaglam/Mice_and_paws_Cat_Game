@@ -24,7 +24,7 @@ class MainApp extends StatefulWidget {
 }
 
 //Language Controller
-Language languageCode = Language.turkish;
+Language languageCode = Language.english;
 
 class MainAppState extends State<MainApp> {
   void setLocale(int value) {
@@ -56,7 +56,7 @@ class MainAppState extends State<MainApp> {
     primarySwatch: Colors.blueGrey,
     canvasColor: Colors.green,
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    colorScheme: const ColorScheme(
+    colorScheme: ColorScheme(
       brightness: Brightness.light,
       primary: Colors.white, //General Text Color
       onPrimary: Colors.black, //X
@@ -64,9 +64,9 @@ class MainAppState extends State<MainApp> {
       onSecondary: Colors.black, //X
       error: Colors.red, //Validation Errors (Not Needed)
       onError: Colors.white, //Validation Errors Text (Not Needed)
-      background: Colors.yellow, //True Background Color
+      background: Colors.orange.shade200, //True Background Color
       onBackground: Colors.black, //X
-      surface: Colors.purpleAccent, //App Color
+      surface: Colors.deepOrange.shade700, //App Color
       onSurface: Colors.black, //AppBar Text Color
     ),
   );

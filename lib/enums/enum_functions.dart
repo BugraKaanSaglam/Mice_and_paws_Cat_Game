@@ -8,7 +8,7 @@ Language getLanguageFromValue(int? value) {
     case 1:
       return Language.english;
     default:
-      return Language.turkish;
+      return Language.english;
   }
 }
 

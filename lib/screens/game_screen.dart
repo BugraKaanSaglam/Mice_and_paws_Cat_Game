@@ -1,10 +1,9 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 import 'dart:async';
 import 'dart:math';
 
 import 'package:flame/cache.dart';
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/database/opc_database_list.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import 'package:game_for_cats_flutter/global/global_variables.dart';
+import 'package:game_for_cats_flutter/main.dart';
 import 'package:game_for_cats_flutter/objects/mouse.dart';
 import '../global/global_images.dart';
 import '../utils/utils.dart';
@@ -45,23 +45,35 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
   int wrongTaps = 0;
   int miceTaps = 0;
   @override
-  bool get debugMode => true;
+  bool get debugMode => false;
 
   @override
   Future<void> onLoad() async {
-    //Loading Audio
-    await FlameAudio.audioCache.load('mice_tap.mp3');
-    //Loading Images
-    await Images().load('mice.png').then((value) => globalMiceImage = value);
-    await Images().load('yellow_background.jpg').then((value) => globalYellowBackgroundImage = value);
+    try {
+      //Loading Audio
+      await FlameAudio.audioCache.load('mice_tap.mp3');
+      //Loading Images
+      await Images().load('mice.png').then((value) => globalMiceImage = value);
+      await Images().load('yellow_background.jpg').then((value) => globalYellowBackgroundImage = value);
+      await Images().load('back_button.png').then((value) => globalBackButtonImage = value);
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context)!.error),
+              content: Text(e.toString()),
+            );
+          });
+    }
     //Add Button
     backButton = ButtonComponent(
+      button: PositionComponent(position: Vector2(20, 20), size: Vector2(40, 40)),
       position: Vector2(10, 10),
-      size: Vector2(40, 40),
-      children: [TextComponent(text: "BACK")],
-      onPressed: () => Navigator.pushNamedAndRemoveUntil(context, "main_screen", (route) => false),
+      children: [SpriteComponent.fromImage(globalBackButtonImage)],
+      onPressed: () => Navigator.pushNamedAndRemoveUntil(context, "/main_screen", (route) => false),
     );
-    //add(backButton); => é!!!!!é
+    add(backButton);
 
     //Add Collision
     add(ScreenHitbox());
@@ -145,7 +157,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
   @override
   void render(Canvas canvas) {
     canvas.drawImageRect(globalYellowBackgroundImage, const Rect.fromLTWH(0, 0, 6016, 4016), Rect.fromLTWH(0, 0, size.x, size.y), Paint());
-    canvas.drawRect(Vector2(gameRef.size.x, gameScreenTopBarHeight).toRect(), Paint()..color = Colors.purpleAccent); //TopBar
+    canvas.drawRect(Vector2(gameRef.size.x, gameScreenTopBarHeight).toRect(), Paint()..color = MainAppState().gameTheme.colorScheme.surface); //TopBar
     drawCountdown(canvas);
     super.render(canvas);
   }
@@ -172,5 +184,3 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     textPainter.paint(canvas, textPosition);
   }
 }
-
-class MyButton extends PositionComponent with TapCallbacks {}

@@ -19,5 +19,8 @@
     "howtoplay_label_forcats": "How To Play? (For Cats)",
     "howtoplay_text_forcats": "Meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow",
     "micetap_count": "Tapped Mice:",
-    "wrongtap_count": "Tapped Outside:"
+    "wrongtap_count": "Tapped Outside:",
+    "save_complete_snackbar": "Task Succesfully Complete!",
+    "error": "Error"
+
 }

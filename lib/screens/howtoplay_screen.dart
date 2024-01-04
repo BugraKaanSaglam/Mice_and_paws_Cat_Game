@@ -19,16 +19,10 @@ class HowToPlayScreen extends StatelessWidget {
       padding: const EdgeInsets.all(5.0),
       child: Column(children: [
         Text(AppLocalizations.of(context)!.howtoplay_label_forhuman, style: labelTextStyle()),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(AppLocalizations.of(context)!.howtoplay_text_forhuman, style: normalTextStyle()),
-        ),
+        Padding(padding: const EdgeInsets.all(8.0), child: Text(AppLocalizations.of(context)!.howtoplay_text_forhuman, style: normalTextStyle())),
         const Spacer(flex: 1),
         Text(AppLocalizations.of(context)!.howtoplay_label_forcats, style: labelTextStyle()),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(AppLocalizations.of(context)!.howtoplay_text_forcats, style: normalTextStyle()),
-        ),
+        Padding(padding: const EdgeInsets.all(8.0), child: Text(AppLocalizations.of(context)!.howtoplay_text_forcats, style: normalTextStyle())),
         const Spacer(flex: 1),
       ]),
     );

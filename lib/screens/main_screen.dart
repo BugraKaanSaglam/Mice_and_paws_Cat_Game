@@ -24,10 +24,6 @@ class _MainScreenState extends State<MainScreen> {
   OPCDataBase? _db;
   @override
   void initState() {
-    //Check Language
-    Future.delayed(const Duration(), () {
-      MainApp.of(context)!.setLocale(languageCode.value);
-    });
     super.initState();
   }
 
@@ -46,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
             case ConnectionState.done:
               if (snapshot.data == null) {
                 OPCDataBase initDataBase =
-                    OPCDataBase(ver: databaseVersion, languageCode: Language.turkish.value, musicVolume: 0.5, miceVolume: 1, difficulty: Difficulty.easy.value);
+                    OPCDataBase(ver: databaseVersion, languageCode: Language.english.value, musicVolume: 0.5, miceVolume: 1, difficulty: Difficulty.easy.value);
                 DBHelper().add(initDataBase);
                 _db = initDataBase;
               } else {
@@ -57,6 +53,11 @@ class _MainScreenState extends State<MainScreen> {
               }
               //Check Game Difficulty
               checkGameDifficulty(_db?.difficulty);
+              //Set Language
+              languageCode = getLanguageFromValue(_db?.languageCode);
+              Future.delayed(const Duration(), () {
+                MainApp.of(context)!.setLocale(languageCode.value);
+              });
               return Column(children: [
                 const Spacer(flex: 20),
                 mainMenuButtons(context, AppLocalizations.of(context)!.start_button, '/game_screen', const Icon(Icons.arrow_right_alt_sharp), dataBase: _db),
