@@ -22,7 +22,7 @@ class DBHelper {
 
   initDatabase() async {
     try {
-      String fileName = 'mygame9.db';
+      String fileName = 'mygame10.db';
       io.Directory documentDirectory = await getApplicationDocumentsDirectory();
       String path = join(documentDirectory.path, fileName);
       var db = await openDatabase(path, version: 1, onCreate: _onCreate, onOpen: (db) {});
@@ -34,7 +34,7 @@ class DBHelper {
 
   _onCreate(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE OPCGameTable(Ver INTEGER not null PRIMARY KEY, LanguageCode INTEGER not null, MusicVolume DOUBLE not null, MiceVolume DOUBLE not null, Difficulty INTEGER not null)');
+        'CREATE TABLE OPCGameTable(Ver INTEGER not null PRIMARY KEY, LanguageCode INTEGER not null, MusicVolume DOUBLE not null, MiceVolume DOUBLE not null, Time INTEGER not null)');
   }
 
   add(OPCDataBase column) async {
@@ -49,7 +49,7 @@ class DBHelper {
   Future<OPCDataBase?> getList(int ver) async {
     var dbClient = await db;
     List<Map<String, dynamic>> maps =
-        await dbClient!.query('OPCGameTable', columns: ['Ver', 'LanguageCode', 'MusicVolume', 'MiceVolume', 'Difficulty'], where: 'Ver = ?', whereArgs: [ver]);
+        await dbClient!.query('OPCGameTable', columns: ['Ver', 'LanguageCode', 'MusicVolume', 'MiceVolume', 'Time'], where: 'Ver = ?', whereArgs: [ver]);
     if (maps.isNotEmpty) {
       OPCDataBase retResult = OPCDataBase.fromMap(maps.first);
       return retResult;

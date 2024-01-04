@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
             case ConnectionState.done:
               if (snapshot.data == null) {
                 OPCDataBase initDataBase =
-                    OPCDataBase(ver: databaseVersion, languageCode: Language.english.value, musicVolume: 0.5, miceVolume: 1, difficulty: Difficulty.easy.value);
+                    OPCDataBase(ver: databaseVersion, languageCode: Language.english.value, musicVolume: 0.5, miceVolume: 1, time: Time.fifty.value);
                 DBHelper().add(initDataBase);
                 _db = initDataBase;
               } else {
@@ -51,8 +51,8 @@ class _MainScreenState extends State<MainScreen> {
               if (snapshot.hasError && _db == null) {
                 return dbError(context);
               }
-              //Check Game Difficulty
-              checkGameDifficulty(_db?.difficulty);
+              //Check Game Time
+              checkGameTime(_db?.time);
               //Set Language
               languageCode = getLanguageFromValue(_db?.languageCode);
               Future.delayed(const Duration(), () {
@@ -74,8 +74,8 @@ class _MainScreenState extends State<MainScreen> {
         });
   }
 
-  checkGameDifficulty(int? difficulty) {
-    getDifficultyFromValue(difficulty); //This also set gameDifficultyTimer!
+  checkGameTime(int? time) {
+    getTimeFromValue(time); //This also set gameTimer!
   }
 
 //* Buttons

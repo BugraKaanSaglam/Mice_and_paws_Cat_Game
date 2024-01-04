@@ -3,3 +3,4 @@
 late var globalMiceImage;
 late var globalYellowBackgroundImage;
 late var globalBackButtonImage;
+late var globalCharacter1Image;

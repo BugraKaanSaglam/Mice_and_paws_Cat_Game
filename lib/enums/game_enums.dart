@@ -18,3 +18,14 @@ enum Difficulty {
   final int value;
   final String name;
 }
+
+enum Time {
+  fifty(50, '50'),
+  hundered(100, '100'),
+  twohundered(200, '200'),
+  sandbox(100000, 'Sandbox');
+
+  const Time(this.value, this.name);
+  final int value;
+  final String name;
+}

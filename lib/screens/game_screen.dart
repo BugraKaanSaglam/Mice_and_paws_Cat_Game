@@ -53,6 +53,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
       //Loading Audio
       await FlameAudio.audioCache.load('mice_tap.mp3');
       //Loading Images
+
       await Images().load('mice.png').then((value) => globalMiceImage = value);
       await Images().load('yellow_background.jpg').then((value) => globalYellowBackgroundImage = value);
       await Images().load('back_button.png').then((value) => globalBackButtonImage = value);
@@ -89,39 +90,13 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
           Mice mice = Mice(startPosition, startRndVelocity, startingSpeed);
           add(mice);
         }
-        if (elapsedTicks == gameDifficultyTimer) {
+        if (elapsedTicks == gameTimer) {
           //End Game
           pauseEngine();
           showDialog(
             context: context,
             builder: (context) {
-              return AlertDialog(
-                  title: Text(AppLocalizations.of(context)!.game_over),
-                  content: Container(
-                    height: 100,
-                    decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                    child: Column(
-                      children: [
-                        Text("${AppLocalizations.of(context)!.micetap_count} $miceTaps"),
-                        const Spacer(flex: 1),
-                        Text("${AppLocalizations.of(context)!.wrongtap_count} $wrongTaps"),
-                        const Spacer(flex: 3),
-                      ],
-                    ),
-                  ),
-                  actions: [
-                    ElevatedButton(
-                      onPressed: () => {
-                        gameRef.pauseEngine(),
-                        Navigator.pushNamedAndRemoveUntil(context, '/game_screen', (route) => false, arguments: ArgumentSender(title: "", dataBase: gameDataBase))
-                      },
-                      child: Text(AppLocalizations.of(context)!.tryagain_button),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false),
-                      child: Text(AppLocalizations.of(context)!.return_mainmenu_button),
-                    ),
-                  ]);
+              return endGameDialog();
             },
           );
         }
@@ -171,16 +146,46 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     );
 
     final textPainter = TextPainter(
-      text: TextSpan(text: '${AppLocalizations.of(context)!.countdown}: ${gameDifficultyTimer - elapsedTicks}', style: textStyle),
+      text: TextSpan(text: '${AppLocalizations.of(context)!.countdown}: ${gameTimer - elapsedTicks}', style: textStyle),
       textDirection: TextDirection.ltr,
     );
 
     textPainter.layout();
 
     // Position the countdown text in the center of the top bar
-    final textPosition = Offset((size.x - textPainter.width) / 2, gameScreenTopBarHeight / 2);
+    final textPosition = Offset((size.x - textPainter.width) / 2, 7);
 
     // Draw the countdown text on the canvas
     textPainter.paint(canvas, textPosition);
+  }
+
+  AlertDialog endGameDialog() {
+    return AlertDialog(
+        title: Text(AppLocalizations.of(context)!.game_over),
+        content: Container(
+          height: 100,
+          decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            children: [
+              Text("${AppLocalizations.of(context)!.micetap_count} $miceTaps"),
+              const Spacer(flex: 1),
+              Text("${AppLocalizations.of(context)!.wrongtap_count} $wrongTaps"),
+              const Spacer(flex: 3),
+            ],
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => {
+              gameRef.pauseEngine(),
+              Navigator.pushNamedAndRemoveUntil(context, '/game_screen', (route) => false, arguments: ArgumentSender(title: "", dataBase: gameDataBase))
+            },
+            child: Text(AppLocalizations.of(context)!.tryagain_button),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false),
+            child: Text(AppLocalizations.of(context)!.return_mainmenu_button),
+          ),
+        ]);
   }
 }

@@ -48,7 +48,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [languageDropDownFormField(), difficultyDropDownFormField(), musicField(), miceSoundField(), saveButton()],
+                  children: [languageDropDownFormField(), timeDropDownFormField(), musicField(), miceSoundField(), saveButton()],
                 ),
               );
             default:
@@ -77,6 +77,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+//! This is not Added TBA
+/*
   Column difficultyDropDownFormField() {
     List<DropdownMenuItem> items = [
       DropdownMenuItem(value: Difficulty.easy.value, child: Text(Difficulty.easy.name)),
@@ -92,6 +94,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
           decoration: formDecoration(),
           items: items,
           onChanged: (value) => _db?.difficulty = value,
+        ),
+      ],
+    );
+  }
+*/
+
+  Column timeDropDownFormField() {
+    List<DropdownMenuItem> items = [
+      DropdownMenuItem(value: Time.fifty.value, child: Text(Time.fifty.name)),
+      DropdownMenuItem(value: Time.hundered.value, child: Text(Time.hundered.name)),
+      DropdownMenuItem(value: Time.twohundered.value, child: Text(Time.twohundered.name)),
+      DropdownMenuItem(value: Time.sandbox.value, child: Text(Time.sandbox.name)),
+    ];
+    return Column(
+      children: [
+        Text(AppLocalizations.of(context)!.select_time),
+        DropdownButtonFormField(
+          dropdownColor: Colors.white,
+          value: _db?.time ?? Time.fifty.value,
+          decoration: formDecoration(),
+          items: items,
+          onChanged: (value) => _db?.time = value,
         ),
       ],
     );
