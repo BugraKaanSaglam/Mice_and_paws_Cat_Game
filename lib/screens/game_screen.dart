@@ -53,10 +53,10 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
       //Loading Audio
       await FlameAudio.audioCache.load('mice_tap.mp3');
       //Loading Images
-
       await Images().load('mice.png').then((value) => globalMiceImage = value);
       await Images().load('yellow_background.jpg').then((value) => globalYellowBackgroundImage = value);
       await Images().load('back_button.png').then((value) => globalBackButtonImage = value);
+      await Images().load('character1_moving.png').then((value) => globalCharacter1Image = value);
     } catch (e) {
       showDialog(
           context: context,
