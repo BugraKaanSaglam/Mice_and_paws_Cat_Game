@@ -12,7 +12,7 @@ import 'package:game_for_cats_flutter/database/opc_database_list.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import 'package:game_for_cats_flutter/global/global_variables.dart';
 import 'package:game_for_cats_flutter/main.dart';
-import 'package:game_for_cats_flutter/objects/mouse.dart';
+import 'package:game_for_cats_flutter/objects/mice.dart';
 import '../global/global_images.dart';
 import '../utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -44,6 +44,8 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
   //* Clicks
   int wrongTaps = 0;
   int miceTaps = 0;
+  //* Inside of Bar Parameters
+  double barParametersHeight = 13;
   @override
   bool get debugMode => false;
 
@@ -70,7 +72,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     //Add Button
     backButton = ButtonComponent(
       button: PositionComponent(position: Vector2(20, 20), size: Vector2(40, 40)),
-      position: Vector2(10, 10),
+      position: Vector2(10, barParametersHeight),
       children: [SpriteComponent.fromImage(globalBackButtonImage)],
       onPressed: () => Navigator.pushNamedAndRemoveUntil(context, "/main_screen", (route) => false),
     );
@@ -139,12 +141,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
 
   //* CountDown Text
   void drawCountdown(Canvas canvas) {
-    const textStyle = TextStyle(
-      color: Colors.white,
-      fontSize: 20.0,
-      fontWeight: FontWeight.bold,
-    );
-
+    const textStyle = TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold);
     final textPainter = TextPainter(
       text: TextSpan(text: '${AppLocalizations.of(context)!.countdown}: ${gameTimer - elapsedTicks}', style: textStyle),
       textDirection: TextDirection.ltr,
@@ -153,7 +150,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     textPainter.layout();
 
     // Position the countdown text in the center of the top bar
-    final textPosition = Offset((size.x - textPainter.width) / 2, 7);
+    final textPosition = Offset((size.x - textPainter.width) / 2, barParametersHeight);
 
     // Draw the countdown text on the canvas
     textPainter.paint(canvas, textPosition);
