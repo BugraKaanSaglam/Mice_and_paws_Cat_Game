@@ -38,6 +38,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
   bool isGameRunning = true; // Is Game Running ?
 
   late ButtonComponent backButton;
+  bool isBackButtonDialogOpen = false;
 
   late Timer interval; // Time Variable
   int elapsedTicks = 0; // Seconds
@@ -156,6 +157,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     textPainter.paint(canvas, textPosition);
   }
 
+  //* Alert for End Game
   AlertDialog endGameDialog() {
     return AlertDialog(
         title: Text(AppLocalizations.of(context)!.game_over),
@@ -186,7 +188,9 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
         ]);
   }
 
+  //* Alert for BackButtonClicked
   AlertDialog backButtonDialog() {
+    isBackButtonDialogOpen = true;
     return AlertDialog(
       title: Text(AppLocalizations.of(context)!.exit_validation),
       content: Container(
@@ -201,17 +205,27 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
       ),
       actions: [
         ElevatedButton(
-          onPressed: () => closeDialog(),
-          child: Text(AppLocalizations.of(context)!.i_am_cat),
-        ),
+            onPressed: () {
+              isBackButtonDialogOpen = false;
+              Navigator.pop(context);
+            },
+            child: Text(AppLocalizations.of(context)!.i_am_cat)),
         ElevatedButton(
-          onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false),
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false);
+            isBackButtonDialogOpen = false;
+          },
           child: Text(AppLocalizations.of(context)!.i_am_human),
         ),
       ],
     );
   }
 
-  // Function to close the dialog
-  void closeDialog() => Navigator.pop(context);
+  //* Function to close the dialog
+  void closeDialog() {
+    if (isBackButtonDialogOpen && context.mounted == true) {
+      Navigator.pop(context);
+    }
+    isBackButtonDialogOpen = false;
+  }
 }
