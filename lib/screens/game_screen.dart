@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable, use_build_context_synchronously
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flame/cache.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -37,6 +36,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
   BuildContext context;
   OPCDataBase? gameDataBase;
   bool isGameRunning = true; // Is Game Running ?
+
   late ButtonComponent backButton;
 
   late Timer interval; // Time Variable
@@ -71,11 +71,16 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
     }
     //Add Button
     backButton = ButtonComponent(
-      button: PositionComponent(position: Vector2(20, 20), size: Vector2(40, 40)),
-      position: Vector2(10, barParametersHeight),
-      children: [SpriteComponent.fromImage(globalBackButtonImage)],
-      onPressed: () => Navigator.pushNamedAndRemoveUntil(context, "/main_screen", (route) => false),
-    );
+        button: PositionComponent(position: Vector2(20, 20), size: Vector2(40, 40)),
+        position: Vector2(10, barParametersHeight),
+        children: [SpriteComponent.fromImage(globalBackButtonImage)],
+        onPressed: () => showDialog(
+            context: context,
+            builder: (context) {
+              Future.delayed(const Duration(seconds: 2), () => closeDialog());
+              return backButtonDialog();
+            }));
+
     add(backButton);
 
     //Add Collision
@@ -95,12 +100,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
         if (elapsedTicks == gameTimer) {
           //End Game
           pauseEngine();
-          showDialog(
-            context: context,
-            builder: (context) {
-              return endGameDialog();
-            },
-          );
+          showDialog(context: context, builder: (context) => endGameDialog());
         }
         elapsedTicks++;
       },
@@ -185,4 +185,33 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
           ),
         ]);
   }
+
+  AlertDialog backButtonDialog() {
+    return AlertDialog(
+      title: Text(AppLocalizations.of(context)!.exit_validation),
+      content: Container(
+        height: 100,
+        decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(20)),
+        child: Column(
+          children: [
+            Text(AppLocalizations.of(context)!.this_will_close_automatically_in_seconds),
+            const Spacer(flex: 1),
+          ],
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () => closeDialog(),
+          child: Text(AppLocalizations.of(context)!.i_am_cat),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false),
+          child: Text(AppLocalizations.of(context)!.i_am_human),
+        ),
+      ],
+    );
+  }
+
+  // Function to close the dialog
+  void closeDialog() => Navigator.pop(context);
 }

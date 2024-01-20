@@ -24,7 +24,12 @@
     "save_complete_snackbar": "İşlem Başarıyla Tamamlandı!",
     "error": "Hata",
     "credits_creators": "Yapımcılar",
-    "credits_creators_text": "Buğra Kaan Sağlam"
+    "credits_creators_text": "Buğra Kaan Sağlam",
+    "exit_validation": "Kim Çıkmak İstiyor? \nKedi mi İnsan mı?",
+    "this_will_close_automatically_in_seconds": "Bu Ekran 2 Saniye İçerisinde \nOtomatik Kapanacak...",
+    "i_am_cat": "Miyav??",
+    "i_am_human": "Ben İnsanım, Oyunu Kapat"
+
 
 
 }

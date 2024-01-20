@@ -24,5 +24,9 @@
     "save_complete_snackbar": "Task Succesfully Complete!",
     "error": "Error",
     "credits_creators": "Creators",
-    "credits_creators_text": "Buğra Kaan Sağlam"
+    "credits_creators_text": "Buğra Kaan Sağlam",
+    "exit_validation": "Who Wants to Exit? \nCat or Human?",
+    "this_will_close_automatically_in_seconds": "This Will Close Automatically \nin 2 Seconds...",
+    "i_am_cat": "Meow??",
+    "i_am_human": "I am Human, Close the Game"
 }
