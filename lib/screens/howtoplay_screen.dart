@@ -19,7 +19,7 @@ class HowToPlayScreen extends StatelessWidget {
       padding: const EdgeInsets.all(5.0),
       child: Column(children: [
         Container(
-            height: 300,
+            height: 200,
             decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(20)),
             child: Column(children: [
               Text(AppLocalizations.of(context)!.howtoplay_label_forhuman, style: labelTextStyle()),
@@ -27,7 +27,7 @@ class HowToPlayScreen extends StatelessWidget {
             ])),
         const Spacer(flex: 1),
         Container(
-            height: 400,
+            height: 300,
             decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(20)),
             child: Column(
               children: [
