@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flame/cache.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -119,7 +120,7 @@ class Game extends FlameGame with TapDetector, DoubleTapDetector, HasGameRef, Ha
   @override
   void onTapDown(TapDownInfo info) {
     super.onTapDown(info);
-    final touchPoint = info.eventPosition.game;
+    final touchPoint = info.eventPosition.global;
     children.any((component) {
       if (component is Mice && component.containsPoint(touchPoint)) {
         FlameAudio.play('mice_tap.mp3', volume: gameDataBase?.miceVolume ?? 1);
