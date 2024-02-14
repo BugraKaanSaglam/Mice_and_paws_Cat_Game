@@ -19,7 +19,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   OPCDataBase? _db;
-  SnackBar? completeSnackBar;
   @override
   void initState() {
     super.initState();
@@ -27,8 +26,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    completeSnackBar = SnackBar(content: Text(AppLocalizations.of(context)!.save_complete_snackbar), elevation: 10, duration: const Duration(seconds: 2));
-
     return Scaffold(appBar: mainAppBar(AppLocalizations.of(context)!.settings_button, context, true), body: mainBody(context));
   }
 
@@ -165,7 +162,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ElevatedButton(
       onPressed: () {
         setState(() {
-          ScaffoldMessenger.of(context).showSnackBar(completeSnackBar!);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.save_complete_snackbar),
+              elevation: 10,
+              duration: const Duration(seconds: 2),
+            ),
+          );
           DBHelper().update(_db!);
           MainApp.of(context)!.setLocale(_db!.languageCode);
         });
