@@ -13,8 +13,8 @@ import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import 'package:game_for_cats_flutter/global/global_variables.dart';
 import 'package:game_for_cats_flutter/main.dart';
 import 'package:game_for_cats_flutter/objects/mice.dart';
-import '../global/global_images.dart';
-import '../utils/utils.dart';
+import 'package:game_for_cats_flutter/global/global_images.dart';
+import 'package:game_for_cats_flutter/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GameScreen extends StatefulWidget {
