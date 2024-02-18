@@ -12,6 +12,7 @@ import 'package:game_for_cats_flutter/database/opc_database_list.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import 'package:game_for_cats_flutter/global/global_variables.dart';
 import 'package:game_for_cats_flutter/main.dart';
+import 'package:game_for_cats_flutter/objects/character1.dart';
 import 'package:game_for_cats_flutter/objects/mice.dart';
 import 'package:game_for_cats_flutter/global/global_images.dart';
 import 'package:game_for_cats_flutter/utils/utils.dart';
@@ -97,6 +98,8 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
           Vector2 startRndVelocity = Utils.generateRandomVelocity(size, 10, 100);
           double startingSpeed = 50;
           Mice mice = Mice(startPosition, startRndVelocity, startingSpeed);
+          Character1 x = Character1(startPosition, startRndVelocity, startingSpeed);
+          add(x);
           add(mice);
         }
         if (elapsedTicks == gameTimer) {
