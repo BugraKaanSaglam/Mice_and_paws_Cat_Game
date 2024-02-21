@@ -1,6 +1,11 @@
+import 'dart:ui';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
+import 'package:flame/sprite.dart';
+import 'package:flutter/painting.dart';
 import 'package:game_for_cats_flutter/global/global_images.dart';
 
 import '../utils/utils.dart';
@@ -17,18 +22,15 @@ class Character1 extends SpriteAnimationComponent with HasGameRef<FlameGame>, Co
   Vector2 target = Vector2.zero();
 
   Character1(Vector2 position, Vector2 velocity, double speed) {
-    final List<Sprite> spriteList = [];
+    const columns = 8;
+    const rows = 1;
+    const frames = columns * rows;
 
-    for (int x = 0; x < globalCharacter1Image.height; x += 128) {
-      // Assuming each sprite is 128x128 pixels
-      for (int y = 0; y < globalCharacter1Image.width; y += 64) {
-        spriteList.add(Sprite(globalCharacter1Image, srcSize: Vector2(128, 128)));
-      }
-    }
+    final spritesheet = SpriteSheet.fromColumnsAndRows(image: globalCharacter1Image, columns: columns, rows: rows);
+    final List<Sprite> spriteList = List<Sprite>.generate(frames, spritesheet.getSpriteById);
     super.position = position;
-    super.size = Vector2(128, 128);
     super.anchor = Anchor.center;
-    super.animation = SpriteAnimation.spriteList(spriteList, stepTime: 0.0001);
+    super.animation = SpriteAnimation.spriteList(spriteList, stepTime: 0.1);
     _velocity = velocity;
     _speed = speed;
     add(RectangleHitbox());
