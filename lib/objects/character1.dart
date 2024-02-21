@@ -21,7 +21,7 @@ class Character1 extends SpriteAnimationComponent with HasGameRef<FlameGame>, Co
 
     for (int x = 0; x < globalCharacter1Image.height; x += 128) {
       // Assuming each sprite is 128x128 pixels
-      for (int y = 0; y < globalCharacter1Image.width; y += 128) {
+      for (int y = 0; y < globalCharacter1Image.width; y += 64) {
         spriteList.add(Sprite(globalCharacter1Image, srcSize: Vector2(128, 128)));
       }
     }

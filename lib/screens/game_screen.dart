@@ -147,10 +147,15 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
   //* CountDown Text
   void drawCountdown(Canvas canvas) {
     const textStyle = TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold);
-    final textPainter = TextPainter(
-      text: TextSpan(text: '${AppLocalizations.of(context)!.countdown}: ${gameTimer - elapsedTicks}', style: textStyle),
-      textDirection: TextDirection.ltr,
-    );
+    late final TextPainter textPainter;
+    if (gameTimer - elapsedTicks > 0) {
+      textPainter = TextPainter(
+        text: TextSpan(text: '${AppLocalizations.of(context)!.countdown}: ${gameTimer - elapsedTicks}', style: textStyle),
+        textDirection: TextDirection.ltr,
+      );
+    } else {
+      textPainter = TextPainter(text: TextSpan(text: AppLocalizations.of(context)!.game_over, style: textStyle), textDirection: TextDirection.ltr);
+    }
     textPainter.layout();
     // Position the countdown text in the center of the top bar
     final textPosition = Offset((size.x - textPainter.width) / 2, barParametersHeight);
