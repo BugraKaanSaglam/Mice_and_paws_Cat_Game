@@ -11,7 +11,7 @@ class CreditsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ArgumentSender;
 
-    return Scaffold(appBar: mainAppBar(args.title!, context, true), body: mainBody(context));
+    return Scaffold(appBar: mainAppBar(args.title!, context), body: mainBody(context));
   }
 
   Widget mainBody(BuildContext context) {

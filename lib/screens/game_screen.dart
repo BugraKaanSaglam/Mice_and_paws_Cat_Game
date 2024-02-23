@@ -28,7 +28,19 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ArgumentSender;
-    return GameWidget(game: Game(args.dataBase, context));
+    return GameWidget(
+      game: Game(args.dataBase, context),
+      loadingBuilder: (p0) => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(MainAppState().gameTheme.colorScheme.surface)),
+            const SizedBox(height: 20),
+            Text(AppLocalizations.of(context)!.loading, style: const TextStyle(color: Colors.white, fontSize: 24)),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -56,6 +68,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
     try {
       //Loading Audio
       await FlameAudio.audioCache.load('mice_tap.mp3');
+      await FlameAudio.audioCache.load('bird_background_sound.mp3');
       //Loading Images
       await Images().load('mice.png').then((value) => globalMiceImage = value);
       await Images().load('yellow_background.jpg').then((value) => globalYellowBackgroundImage = value);
@@ -87,10 +100,11 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
 
     //Add Collision
     add(ScreenHitbox());
+    FlameAudio.bgm.play('bird_background_sound.mp3', volume: gameDataBase?.musicVolume ?? 1);
 
     interval = Timer(
       1.0,
-      onTick: () {
+      onTick: () async {
         if (elapsedTicks % 5 == 0) {
           //Adding Mice Every 5 Seconds
           Vector2 startPosition = Vector2(0, gameScreenTopBarHeight + Random().nextDouble() * (size.y - gameScreenTopBarHeight));
@@ -101,7 +115,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
         }
         if (elapsedTicks == gameTimer) {
           //End Game
-          pauseEngine();
+          await closeGame();
           showDialog(context: context, builder: (context) => endGameDialog());
         }
         elapsedTicks++;
@@ -178,14 +192,11 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
         ),
         actions: [
           ElevatedButton(
-            onPressed: () => {
-              gameRef.pauseEngine(),
-              Navigator.pushNamedAndRemoveUntil(context, '/game_screen', (route) => false, arguments: ArgumentSender(title: "", dataBase: gameDataBase))
-            },
+            onPressed: () async => await closeGame(adress: '/game_screen', arguments: ArgumentSender(title: "", dataBase: gameDataBase)),
             child: Text(AppLocalizations.of(context)!.tryagain_button),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false),
+            onPressed: () async => await closeGame(adress: '/main_screen'),
             child: Text(AppLocalizations.of(context)!.return_mainmenu_button),
           ),
         ]);
@@ -214,10 +225,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
             },
             child: Text(AppLocalizations.of(context)!.i_am_cat)),
         ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false);
-            isBackButtonDialogOpen = false;
-          },
+          onPressed: () async => await closeGame(adress: '/main_screen'),
           child: Text(AppLocalizations.of(context)!.i_am_human),
         ),
       ],
@@ -230,5 +238,19 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
       Navigator.pop(context);
     }
     isBackButtonDialogOpen = false;
+  }
+
+  //* Game Ended, After This Function Triggers
+  Future<void> closeGame({String? adress, ArgumentSender? arguments}) async {
+    await FlameAudio.bgm.stop();
+    game.pauseEngine();
+    isBackButtonDialogOpen = false;
+    if (adress != null) {
+      if (arguments != null) {
+        Navigator.pushNamedAndRemoveUntil(context, adress, (route) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(context, adress, (route) => false, arguments: arguments);
+      }
+    }
   }
 }

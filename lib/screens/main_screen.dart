@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: mainAppBar(AppLocalizations.of(context)!.game_name, context, false), body: mainBody(context));
+    return Scaffold(appBar: mainAppBar(AppLocalizations.of(context)!.game_name, context, hasBackButton: false), body: mainBody(context));
   }
 
   Widget mainBody(BuildContext context) {

@@ -26,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: mainAppBar(AppLocalizations.of(context)!.settings_button, context, true), body: mainBody(context));
+    return Scaffold(appBar: mainAppBar(AppLocalizations.of(context)!.settings_button, context), body: mainBody(context));
   }
 
   Widget mainBody(BuildContext context) {
