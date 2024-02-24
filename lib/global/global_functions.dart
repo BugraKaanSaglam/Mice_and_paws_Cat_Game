@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 
 AppBar mainAppBar(String title, BuildContext context, {bool hasBackButton = true}) {
-  Widget? leading = const SizedBox();
+  Widget leading = BackButton(onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false));
+
   if (hasBackButton) {
-    leading = BackButton(onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/main_screen', (route) => false));
+    return AppBar(
+      title: Text(title),
+      centerTitle: true,
+      leading: leading,
+      elevation: 20,
+      shadowColor: Colors.yellowAccent,
+      foregroundColor: Colors.white,
+    );
+  } else {
+    return AppBar(
+      title: Text(title),
+      centerTitle: true,
+      elevation: 20,
+      shadowColor: Colors.yellowAccent,
+      foregroundColor: Colors.white,
+    );
   }
-  return AppBar(
-    title: Text(title),
-    centerTitle: true,
-    leading: leading,
-    elevation: 20,
-    shadowColor: Colors.yellowAccent,
-    foregroundColor: Colors.white,
-  );
 }
 
 TextStyle labelTextStyle() => const TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold);

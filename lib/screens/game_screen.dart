@@ -39,7 +39,6 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
 
   BuildContext context;
   OPCDataBase? gameDataBase;
-  bool isGameRunning = true; // Is Game Running ?
 
   late ButtonComponent backButton;
   bool isBackButtonDialogOpen = false;
