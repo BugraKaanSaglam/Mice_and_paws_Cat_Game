@@ -9,6 +9,7 @@ import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/database/opc_database_list.dart';
+import 'package:game_for_cats_flutter/functions/loading_screen_function.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import 'package:game_for_cats_flutter/global/global_variables.dart';
 import 'package:game_for_cats_flutter/main.dart';
@@ -17,9 +18,9 @@ import 'package:game_for_cats_flutter/global/global_images.dart';
 import 'package:game_for_cats_flutter/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
-
   @override
   State<GameScreen> createState() => _GameScreenState();
 }
@@ -28,24 +29,13 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ArgumentSender;
-    return GameWidget(
-      game: Game(args.dataBase, context),
-      loadingBuilder: (p0) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(MainAppState().gameTheme.colorScheme.surface)),
-            const SizedBox(height: 20),
-            Text(AppLocalizations.of(context)!.loading, style: const TextStyle(color: Colors.white, fontSize: 24)),
-          ],
-        ),
-      ),
-    );
+    return GameWidget(game: Game(args.dataBase, context), loadingBuilder: (p0) => loadingScreen(context));
   }
 }
 
 class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection {
   Game(this.gameDataBase, this.context);
+
   BuildContext context;
   OPCDataBase? gameDataBase;
   bool isGameRunning = true; // Is Game Running ?
