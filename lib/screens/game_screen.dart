@@ -18,6 +18,7 @@ import 'package:game_for_cats_flutter/global/global_images.dart';
 import 'package:game_for_cats_flutter/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+bool isBackButtonClicked = false;
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -81,7 +82,8 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
         onPressed: () => showDialog(
             context: context,
             builder: (context) {
-              Future.delayed(const Duration(seconds: 2), () => closeDialog());
+              isBackButtonClicked = true;
+              Future.delayed(const Duration(seconds: 2), () => closeDialogAutomatically());
               return backButtonDialog();
             }));
 
@@ -89,7 +91,9 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
 
     //Add Collision
     add(ScreenHitbox());
-    FlameAudio.bgm.play('bird_background_sound.mp3', volume: gameDataBase?.musicVolume ?? 1);
+    if (!isBackButtonClicked) {
+      FlameAudio.bgm.play('bird_background_sound.mp3', volume: gameDataBase?.musicVolume ?? 1);
+    }
 
     interval = Timer(
       1.0,
@@ -222,7 +226,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
   }
 
   //* Function to close the dialog
-  void closeDialog() {
+  void closeDialogAutomatically() {
     if (isBackButtonDialogOpen && context.mounted == true) {
       Navigator.pop(context);
     }
@@ -233,13 +237,14 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
   Future<void> closeGame({String? adress, ArgumentSender? arguments}) async {
     await FlameAudio.bgm.stop();
     game.pauseEngine();
-    isBackButtonDialogOpen = false;
     if (adress != null) {
       if (arguments != null) {
         Navigator.pushNamedAndRemoveUntil(context, adress, (route) => false);
+        return;
       } else {
         Navigator.pushNamedAndRemoveUntil(context, adress, (route) => false, arguments: arguments);
       }
     }
+    isBackButtonClicked = false;
   }
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 import 'dart:io';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:game_for_cats_flutter/database/db_error.dart';
 import 'package:game_for_cats_flutter/database/db_helper.dart';
@@ -24,6 +25,7 @@ class _MainScreenState extends State<MainScreen> {
   OPCDataBase? _db;
   @override
   void initState() {
+    FlameAudio.bgm.stop();
     super.initState();
   }
 
