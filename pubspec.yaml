@@ -13,16 +13,22 @@ dependencies:
     sdk: flutter
   flutter:
     sdk: flutter 
- 
   intl: ^0.18.1
   path_provider: ^2.1.1
   sqflite: ^2.3.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
 
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21
 
 flutter:   
   generate: true
