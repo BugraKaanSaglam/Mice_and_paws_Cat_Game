@@ -6,8 +6,8 @@ import 'package:game_for_cats_flutter/global/global_images.dart';
 
 import '../utils/utils.dart';
 
-// Mice class is a PositionComponent so we get the angle and position of the element.
-class Mice extends SpriteAnimationComponent with HasGameRef<FlameGame>, CollisionCallbacks {
+// Bug class is a PositionComponent so we get the angle and position of the element.
+class Bug extends SpriteAnimationComponent with HasGameRef<FlameGame>, CollisionCallbacks {
   late Vector2 _velocity;
   late final double _speed;
   bool _isColliding = false;
@@ -17,10 +17,10 @@ class Mice extends SpriteAnimationComponent with HasGameRef<FlameGame>, Collisio
   double steeringFactor = 0.01;
   Vector2 target = Vector2.zero();
 
-  Mice(Vector2 position, Vector2 velocity, double speed)
+  Bug(Vector2 position, Vector2 velocity, double speed)
       : _velocity = velocity,
         _speed = speed,
-        super(animation: animationHandler(globalMiceImage, 5, 1), position: position, size: Vector2(64, 64), anchor: Anchor.center) {
+        super(animation: animationHandler(globalBugImage, 3, 1, stepTime: 0.08), position: position, size: Vector2(60, 60), anchor: Anchor.center) {
     add(RectangleHitbox());
   }
 
@@ -36,7 +36,7 @@ class Mice extends SpriteAnimationComponent with HasGameRef<FlameGame>, Collisio
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Mice && !_isColliding) {
+    if (other is Bug && !_isColliding) {
       _isColliding = true;
       target = Utils.generateRandomPosition(gameRef.size, Vector2(0, 10));
     }
@@ -66,7 +66,7 @@ class Mice extends SpriteAnimationComponent with HasGameRef<FlameGame>, Collisio
     //Update Position
     position += _velocity * dt;
 
-    //New Target Added, When Mice Get the Current Target
+    //New Target Added, When Bug Get the Current Target
     if ((target - position).length < 10.0) {
       target = Utils.generateRandomPosition(gameRef.size, Vector2(0, 10));
     }
@@ -76,7 +76,7 @@ class Mice extends SpriteAnimationComponent with HasGameRef<FlameGame>, Collisio
       position = Utils.wrapPosition(gameRef.size, position);
     }
 
-    //Update Mice Angle
+    //Update Bug Angle
     angle = _velocity.screenAngle();
   }
 }

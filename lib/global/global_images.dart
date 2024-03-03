@@ -2,7 +2,9 @@
 
 import 'dart:ui';
 
+//Objects
 late Image globalMiceImage;
+late Image globalBugImage;
+
 late Image globalYellowBackgroundImage;
 late Image globalBackButtonImage;
-late Image globalCharacter1Image;

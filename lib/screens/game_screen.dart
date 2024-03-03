@@ -13,6 +13,7 @@ import 'package:game_for_cats_flutter/functions/loading_screen_function.dart';
 import 'package:game_for_cats_flutter/global/argumentsender_class.dart';
 import 'package:game_for_cats_flutter/global/global_variables.dart';
 import 'package:game_for_cats_flutter/main.dart';
+import 'package:game_for_cats_flutter/objects/bug.dart';
 import 'package:game_for_cats_flutter/objects/mice.dart';
 import 'package:game_for_cats_flutter/global/global_images.dart';
 import 'package:game_for_cats_flutter/utils/utils.dart';
@@ -48,6 +49,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
   //* Clicks
   int wrongTaps = 0;
   int miceTaps = 0;
+  int bugTaps = 0;
   //* Inside of Bar Parameters
   double barParametersHeight = 13;
   @override
@@ -60,7 +62,9 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
       await FlameAudio.audioCache.load('mice_tap.mp3');
       await FlameAudio.audioCache.load('bird_background_sound.mp3');
       //Loading Images
-      await Images().load('mice.png').then((value) => globalMiceImage = value);
+      await Images().load('mice_sprite.png').then((value) => globalMiceImage = value);
+      await Images().load('bug_sprite.png').then((value) => globalBugImage = value);
+
       await Images().load('yellow_background.jpg').then((value) => globalYellowBackgroundImage = value);
       await Images().load('back_button.png').then((value) => globalBackButtonImage = value);
     } catch (e) {
@@ -97,13 +101,20 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
     interval = Timer(
       1.0,
       onTick: () async {
-        if (elapsedTicks % 5 == 0) {
-          //Adding Mice Every 5 Seconds
+        if (elapsedTicks % 4 == 0) {
+          double startingSpeed = 50;
+
+          //Adding Mice or Bug Every 4 Seconds
+          int randomValue = Random().nextInt(2); // 0 or 1
           Vector2 startPosition = Vector2(0, gameScreenTopBarHeight + Random().nextDouble() * (size.y - gameScreenTopBarHeight));
           Vector2 startRndVelocity = Utils.generateRandomVelocity(size, 10, 100);
-          double startingSpeed = 50;
-          Mice mice = Mice(startPosition, startRndVelocity, startingSpeed);
-          add(mice);
+          if (randomValue == 0) {
+            Mice mice = Mice(startPosition, startRndVelocity, startingSpeed);
+            add(mice);
+          } else {
+            Bug bug = Bug(startPosition, startRndVelocity, startingSpeed);
+            add(bug);
+          }
         }
         if (elapsedTicks == gameTimer) {
           //End Game
@@ -131,6 +142,12 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
       if (component is Mice && component.containsPoint(touchPoint)) {
         FlameAudio.play('mice_tap.mp3', volume: gameDataBase?.miceVolume ?? 1);
         miceTaps++;
+        remove(component);
+        return true;
+      }
+      if (component is Bug && component.containsPoint(touchPoint)) {
+        //FlameAudio.play('mice_tap.mp3', volume: gameDataBase?.miceVolume ?? 1); => Need Sound
+        bugTaps++;
         remove(component);
         return true;
       }
