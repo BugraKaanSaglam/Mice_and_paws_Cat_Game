@@ -20,6 +20,7 @@
     "howtoplay_label_forcats": "How To Play? (For Cats)",
     "howtoplay_text_forcats": "Meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow",
     "micetap_count": "Tapped Mice:",
+    "bugtap_count": "Tapped Bug:",
     "wrongtap_count": "Tapped Outside:",
     "save_complete_snackbar": "Task Succesfully Complete!",
     "error": "Error",
@@ -30,4 +31,5 @@
     "i_am_cat": "Meow??",
     "i_am_human": "I am Human, Close the Game",
     "loading": "Loading..."
+
 }

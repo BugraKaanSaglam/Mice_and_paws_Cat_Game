@@ -36,7 +36,7 @@ class Mice extends SpriteAnimationComponent with HasGameRef<FlameGame>, Collisio
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Mice && !_isColliding) {
+    if (!_isColliding) {
       _isColliding = true;
       target = Utils.generateRandomPosition(gameRef.size, Vector2(0, 10));
     }

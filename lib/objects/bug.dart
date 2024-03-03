@@ -36,7 +36,7 @@ class Bug extends SpriteAnimationComponent with HasGameRef<FlameGame>, Collision
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Bug && !_isColliding) {
+    if (!_isColliding) {
       _isColliding = true;
       target = Utils.generateRandomPosition(gameRef.size, Vector2(0, 10));
     }

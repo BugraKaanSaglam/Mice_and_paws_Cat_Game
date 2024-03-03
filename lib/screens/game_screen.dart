@@ -30,7 +30,7 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as ArgumentSender;
+    final args = ModalRoute.of(context)?.settings.arguments as ArgumentSender;
     return GameWidget(game: Game(args.dataBase, context), loadingBuilder: (p0) => loadingScreen(context));
   }
 }
@@ -192,6 +192,8 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
           decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(20)),
           child: Column(
             children: [
+              Text("${AppLocalizations.of(context)!.bugtap_count} $bugTaps"),
+              const Spacer(flex: 1),
               Text("${AppLocalizations.of(context)!.micetap_count} $miceTaps"),
               const Spacer(flex: 1),
               Text("${AppLocalizations.of(context)!.wrongtap_count} $wrongTaps"),
@@ -254,7 +256,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
     await FlameAudio.bgm.stop();
     game.pauseEngine();
     if (adress != null) {
-      if (arguments != null) {
+      if (arguments == null) {
         Navigator.pushNamedAndRemoveUntil(context, adress, (route) => false);
         return;
       } else {
