@@ -9,7 +9,7 @@
     "select_difficulty": "Select Difficulty",
     "select_time": "Select Time",
     "select_musicvolume": "Game Music Volume",
-    "select_micevolume": "Mice Volume",
+    "select_charactervolume": "Characters Volume",
     "save_button": "Save",
     "countdown": "Time Left",
     "game_over": "Game Over",

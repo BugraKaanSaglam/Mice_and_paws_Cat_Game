@@ -143,13 +143,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (context, miceSoundState) {
         return Column(
           children: [
-            Text(AppLocalizations.of(context)!.select_micevolume),
+            Text(AppLocalizations.of(context)!.select_charactervolume),
             Slider(
               min: 0,
               max: 1,
-              value: _db!.miceVolume.toDouble(),
+              value: _db!.characterVolume.toDouble(),
               onChanged: (newValue) {
-                miceSoundState(() => _db!.miceVolume = newValue);
+                miceSoundState(() => _db!.characterVolume = newValue);
               },
             ),
           ],

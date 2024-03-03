@@ -60,12 +60,14 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
     try {
       //Loading Audio
       await FlameAudio.audioCache.load('mice_tap.mp3');
+      await FlameAudio.audioCache.load('bug_tap.wav');
+
       await FlameAudio.audioCache.load('bird_background_sound.mp3');
       //Loading Images
       await Images().load('mice_sprite.png').then((value) => globalMiceImage = value);
       await Images().load('bug_sprite.png').then((value) => globalBugImage = value);
 
-      await Images().load('yellow_background.jpg').then((value) => globalYellowBackgroundImage = value);
+      await Images().load('yellow_background.png').then((value) => globalYellowBackgroundImage = value);
       await Images().load('back_button.png').then((value) => globalBackButtonImage = value);
     } catch (e) {
       showDialog(
@@ -83,6 +85,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
         position: Vector2(10, barParametersHeight),
         children: [SpriteComponent.fromImage(globalBackButtonImage)],
         onPressed: () => showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (context) {
               isBackButtonClicked = true;
@@ -140,13 +143,13 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
     final touchPoint = info.eventPosition.global;
     children.any((component) {
       if (component is Mice && component.containsPoint(touchPoint)) {
-        FlameAudio.play('mice_tap.mp3', volume: gameDataBase?.miceVolume ?? 1);
+        FlameAudio.play('mice_tap.mp3', volume: gameDataBase?.characterVolume ?? 1);
         miceTaps++;
         remove(component);
         return true;
       }
       if (component is Bug && component.containsPoint(touchPoint)) {
-        //FlameAudio.play('mice_tap.mp3', volume: gameDataBase?.miceVolume ?? 1); => Need Sound
+        FlameAudio.play('bug_tap.wav', volume: gameDataBase?.characterVolume ?? 1);
         bugTaps++;
         remove(component);
         return true;
@@ -158,7 +161,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
 
   @override
   void render(Canvas canvas) {
-    canvas.drawImageRect(globalYellowBackgroundImage, const Rect.fromLTWH(0, 0, 6016, 4016), Rect.fromLTWH(0, 0, size.x, size.y), Paint());
+    canvas.drawImageRect(globalYellowBackgroundImage, const Rect.fromLTWH(0, 0, 1000, 1000), Rect.fromLTWH(0, 0, size.x, size.y), Paint());
     canvas.drawRect(Vector2(gameRef.size.x, gameScreenTopBarHeight).toRect(), Paint()..color = MainAppState().gameTheme.colorScheme.surface); //TopBar
     drawCountdown(canvas);
     super.render(canvas);
@@ -217,6 +220,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
   AlertDialog backButtonDialog() {
     isBackButtonDialogOpen = true;
     return AlertDialog(
+      elevation: 10,
       title: Text(AppLocalizations.of(context)!.exit_validation),
       content: Container(
         height: 100,

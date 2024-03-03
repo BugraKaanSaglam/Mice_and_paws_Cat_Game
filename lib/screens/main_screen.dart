@@ -44,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
             case ConnectionState.done:
               if (snapshot.data == null) {
                 OPCDataBase initDataBase =
-                    OPCDataBase(ver: databaseVersion, languageCode: Language.english.value, musicVolume: 0.5, miceVolume: 1, time: Time.fifty.value);
+                    OPCDataBase(ver: databaseVersion, languageCode: Language.english.value, musicVolume: 0.5, characterVolume: 1, time: Time.fifty.value);
                 DBHelper().add(initDataBase);
                 _db = initDataBase;
               } else {

@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:game_for_cats_flutter/functions/animation_handler.dart';
 import 'package:game_for_cats_flutter/global/global_images.dart';
+import 'package:game_for_cats_flutter/global/global_variables.dart';
 
 import '../utils/utils.dart';
 
@@ -11,6 +12,7 @@ class Bug extends SpriteAnimationComponent with HasGameRef<FlameGame>, Collision
   late Vector2 _velocity;
   late final double _speed;
   bool _isColliding = false;
+  DateTime? _lastCollisionTime;
 
   double acceleration = 2000.0;
   double friction = 0.1;
@@ -36,9 +38,16 @@ class Bug extends SpriteAnimationComponent with HasGameRef<FlameGame>, Collision
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    if (!_isColliding) {
+    final currentTime = DateTime.now();
+    if (!_isColliding || _lastCollisionTime == null || currentTime.difference(_lastCollisionTime!) >= Duration(milliseconds: waitTimeForCollisions)) {
       _isColliding = true;
+      _lastCollisionTime = currentTime;
       target = Utils.generateRandomPosition(gameRef.size, Vector2(0, 10));
+
+      // Reset _isColliding after a certain delay
+      Future.delayed(Duration(milliseconds: waitTimeForCollisions), () {
+        _isColliding = false;
+      });
     }
   }
 

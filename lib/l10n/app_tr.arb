@@ -9,7 +9,7 @@
     "select_difficulty": "Zorluk Seçiniz",
     "select_time": "Süreyi Seçiniz",
     "select_musicvolume": "Müziğin Ses Yüksekliği",
-    "select_micevolume": "Farelerin Ses Yüksekliği",
+    "select_charactervolume": "Karakterlerin Ses Yüksekliği",
     "save_button": "Kaydet",
     "countdown": "Kalan Süre",
     "game_over": "Oyun Bitti",
