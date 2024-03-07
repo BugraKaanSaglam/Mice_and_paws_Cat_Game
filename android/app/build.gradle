@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.game_for_cats_flutter"
+        applicationId "com.mice_and_paws_cat_game"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
@@ -57,6 +57,8 @@ android {
      release {
        storeFile file('keystore.jks')
        keyAlias 'key'
+       keyPassword 'bks2929'
+       storePassword 'bks2929'
      }
    }
    buildTypes {
