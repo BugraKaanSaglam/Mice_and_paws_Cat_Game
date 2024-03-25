@@ -6,5 +6,5 @@ import 'dart:ui';
 late Image globalMiceImage;
 late Image globalBugImage;
 
-late Image globalYellowBackgroundImage;
+late Image globalBackgroundImage;
 late Image globalBackButtonImage;

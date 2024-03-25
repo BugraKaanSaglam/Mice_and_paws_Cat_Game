@@ -67,7 +67,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
       await Images().load('mice_sprite.png').then((value) => globalMiceImage = value);
       await Images().load('bug_sprite.png').then((value) => globalBugImage = value);
 
-      await Images().load('yellow_background.png').then((value) => globalYellowBackgroundImage = value);
+      await Images().load('background.webp').then((value) => globalBackgroundImage = value);
       await Images().load('back_button.png').then((value) => globalBackButtonImage = value);
     } catch (e) {
       showDialog(
@@ -161,7 +161,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
 
   @override
   void render(Canvas canvas) {
-    canvas.drawImageRect(globalYellowBackgroundImage, const Rect.fromLTWH(0, 0, 1000, 1000), Rect.fromLTWH(0, 0, size.x, size.y), Paint());
+    canvas.drawImageRect(globalBackgroundImage, const Rect.fromLTWH(0, 0, 1024, 1024), Rect.fromLTWH(0, 0, size.x, size.y), Paint());
     canvas.drawRect(Vector2(gameRef.size.x, gameScreenTopBarHeight).toRect(), Paint()..color = MainAppState().gameTheme.colorScheme.surface); //TopBar
     drawCountdown(canvas);
     super.render(canvas);
