@@ -20,6 +20,7 @@ import 'package:game_for_cats_flutter/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 bool isBackButtonClicked = false;
+bool isGameClosing = false;
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -70,14 +71,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
       await Images().load('background.webp').then((value) => globalBackgroundImage = value);
       await Images().load('back_button.png').then((value) => globalBackButtonImage = value);
     } catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(AppLocalizations.of(context)!.error),
-              content: Text(e.toString()),
-            );
-          });
+      showDialog(context: context, builder: (context) => AlertDialog(title: Text(AppLocalizations.of(context)!.error), content: Text(e.toString())));
     }
     //Add Button
     backButton = ButtonComponent(
@@ -97,7 +91,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
 
     //Add Collision
     add(ScreenHitbox());
-    if (!isBackButtonClicked) {
+    if (!isGameClosing) {
       FlameAudio.bgm.play('bird_background_sound.mp3', volume: gameDataBase?.musicVolume ?? 1);
     }
 
@@ -195,7 +189,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
         title: Text(AppLocalizations.of(context)!.game_over),
         content: Container(
           height: 100,
-          decoration: BoxDecoration(border: Border.all(), color: Colors.transparent, borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(border: Border.all(), color: Colors.white70, borderRadius: BorderRadius.circular(20)),
           child: Column(
             children: [
               Text("${AppLocalizations.of(context)!.bugtap_count} $bugTaps"),
@@ -243,7 +237,12 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
             },
             child: Text(AppLocalizations.of(context)!.i_am_cat)),
         ElevatedButton(
-          onPressed: () async => await closeGame(adress: '/main_screen'),
+          onPressed: () async {
+            isBackButtonDialogOpen = false;
+            Navigator.pop(context);
+            await closeGame();
+            showDialog(context: context, builder: (context) => endGameDialog());
+          },
           child: Text(AppLocalizations.of(context)!.i_am_human),
         ),
       ],
@@ -260,8 +259,9 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
 
   //* Game Ended, After This Function Triggers
   Future<void> closeGame({String? adress, ArgumentSender? arguments}) async {
-    await FlameAudio.bgm.stop();
     game.pauseEngine();
+    await FlameAudio.bgm.stop();
+
     if (adress != null) {
       if (arguments == null) {
         Navigator.pushNamedAndRemoveUntil(context, adress, (route) => false);
@@ -270,6 +270,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
         Navigator.pushNamedAndRemoveUntil(context, adress, (route) => false, arguments: arguments);
       }
     }
+    isGameClosing = true;
     isBackButtonClicked = false;
   }
 }
