@@ -87,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
 
     return ElevatedButton(
       onPressed: () => Navigator.pushNamedAndRemoveUntil(context, adressString, (route) => false, arguments: argumentSender),
-      child: Row(children: [Text(buttonString), buttonIcon]),
+      child: Row(children: [Text(buttonString, style: const TextStyle(fontWeight: FontWeight.bold)), buttonIcon]),
     );
   }
 

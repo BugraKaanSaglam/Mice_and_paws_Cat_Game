@@ -47,7 +47,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
   late Timer interval; // Time Variable
   int elapsedTicks = 0; // Seconds
   //* Clicks
-  int wrongTaps = 0;
+  int totalTaps = 0;
   int miceTaps = 0;
   int bugTaps = 0;
   //* Inside of Bar Parameters
@@ -142,12 +142,14 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
     super.onTapDown(info);
     final touchPoint = info.eventPosition.global;
     children.any((component) {
+      //? Mice Tap
       if (component is Mice && component.containsPoint(touchPoint)) {
         FlameAudio.play('mice_tap.mp3', volume: gameDataBase?.characterVolume ?? 1);
         miceTaps++;
         remove(component);
         return true;
       }
+      //? Bug Tap
       if (component is Bug && component.containsPoint(touchPoint)) {
         FlameAudio.play('bug_tap.wav', volume: gameDataBase?.characterVolume ?? 1);
         bugTaps++;
@@ -156,7 +158,7 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
       }
       return false;
     });
-    wrongTaps++;
+    totalTaps++;
   }
 
   @override
@@ -188,11 +190,12 @@ class Game extends FlameGame with TapDetector, HasGameRef, HasCollisionDetection
 
   //* Alert for End Game
   AlertDialog endGameDialog() {
+    int wrongTaps = totalTaps - (bugTaps + miceTaps);
     return AlertDialog(
         title: Text(AppLocalizations.of(context)!.game_over),
         content: Container(
           height: 100,
-          decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(border: Border.all(), color: Colors.transparent, borderRadius: BorderRadius.circular(20)),
           child: Column(
             children: [
               Text("${AppLocalizations.of(context)!.bugtap_count} $bugTaps"),
